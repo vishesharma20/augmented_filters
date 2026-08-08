@@ -6,6 +6,8 @@ Kinda made a personlised snapchat!
 Why??
  just for fun :)
 
+## Live link - https://vishesharma20.github.io/augmented_filters/
+
 ## Screenshots
 
 | Filter ready | Landing page |
