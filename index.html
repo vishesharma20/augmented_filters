@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>AI Face Studio 🐥✨</title>
+
+<!-- Separate stylesheet (as requested) -->
+<link rel="stylesheet" href="style.css" />
+
+<!-- Face-tracking engine, bundled locally in lib/ so it works even if your
+     network blocks external CDNs (this was the actual cause of "no face detected") -->
+<script src="lib/human.js"></script>
+</head>
+<body>
+
+  <div class="server-notice" id="serverNotice">
+    <strong>One setup step needed:</strong> this app was opened directly as a file, and browsers block local pages from loading local AI model files that way. In VS Code, right click <code>index.html</code> in the file explorer and choose Open with Live Server (install the free Live Server extension first if you do not have it), then use the address it opens instead of opening the file directly. You can also run <code>python -m http.server</code> in this folder and visit the address it prints.
+    <button id="serverNoticeClose">Got it</button>
+  </div>
+
+  <!-- floating doodle decorations -->
+  <div class="doodle d1">✨</div>
+  <div class="doodle d2">💖</div>
+  <div class="doodle d3">⭐</div>
+  <div class="doodle d4">🎉</div>
+  <div class="doodle d5">☁️</div>
+  <div class="doodle d6">✨</div>
+
+  <div class="app-shell">
+
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-badge">🐥</div>
+        <div>
+          <h1>AI Face Studio</h1>
+          <p class="tagline">goofy filters, zero chill ✨</p>
+        </div>
+      </div>
+      <div class="pill-stack">
+        <div class="status-pill" id="statusPill">
+          <span class="dot" id="faceDot"></span>
+          <span id="faceStatus">no face yet 👀</span>
+        </div>
+        <button class="status-pill ai-pill" id="aiStatusPill" title="Tap to retry loading filters">
+          <span class="dot" id="aiDot"></span>
+          <span id="aiStatus">waking up the ai 🧠</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="diagnostics-box" id="diagnosticsBox">
+      <p>Filters could not start. Here is exactly why, copy this and send it over if you need help:</p>
+      <textarea id="diagnosticsText" readonly rows="4"></textarea>
+      <button class="btn-cute" id="diagnosticsCopyBtn">Copy details</button>
+    </div>
+
+    <div class="stage-frame">
+      <div class="stage" id="stage">
+        <video id="video" playsinline muted></video>
+        <canvas id="canvas"></canvas>
+
+        <div class="stage-hud">
+          <div class="fps-badge" id="fpsBadge">···</div>
+          <div class="rec-badge" id="recBadge"><span class="rec-dot"></span><span id="recTimer">0:00</span></div>
+        </div>
+
+        <div class="permission-gate" id="permissionGate">
+          <div class="gate-emoji">🎥💫</div>
+          <h2>let's see that face!</h2>
+          <p>Everything runs right here on your device, nothing gets uploaded anywhere. Pinky promise.</p>
+          <button class="btn-cute btn-primary" id="enableBtn">Turn On Camera</button>
+        </div>
+      </div>
+      <div class="stage-tape tape-left"></div>
+      <div class="stage-tape tape-right"></div>
+    </div>
+
+    <section class="carousel-wrap">
+      <h2 class="section-label">pick your chaos 🎭</h2>
+      <div class="carousel" id="carousel"></div>
+    </section>
+
+    <section class="controls">
+      <button class="round-btn" id="flipBtn" title="Flip camera">🔄</button>
+
+      <button class="shutter" id="shutterBtn">
+        <span class="shutter-ring"></span>
+      </button>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="photo" id="photoModeBtn">📸 PHOTO</button>
+        <button class="mode-btn" data-mode="video" id="videoModeBtn">🎬 VIDEO</button>
+      </div>
+    </section>
+
+    <section class="gallery-wrap">
+      <h2 class="section-label">your masterpieces 🖼️</h2>
+      <div class="gallery" id="gallery">
+        <div class="gallery-empty">nothing yet... strike a goofy pose! 🤳</div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Big "your capture is ready" download modal -->
+  <div class="modal-backdrop" id="captureModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 id="modalTitle">Snapped it! 📸</h3>
+      <div class="modal-preview" id="modalPreview"></div>
+      <p class="modal-meta" id="modalMeta"></p>
+      <button class="btn-cute btn-primary btn-download" id="modalDownloadBtn">
+        <img src="assets/download.jpeg" alt="" />
+        <span>Download to my laptop</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Separate JS file (as requested) -->
+  <script src="script.js"></script>
+</body>
+</html>
